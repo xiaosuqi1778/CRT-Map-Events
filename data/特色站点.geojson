@@ -1,0 +1,222 @@
+{
+    "type": "FeatureCollection",
+    "name": "特色站点",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 41,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "欢乐谷",
+                "monorail": null,
+                "interchange": null,
+                "belongto": "国博支线",
+                "time": "2013-05-15",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.5046854,
+                    29.6716472
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 84,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "江北机场T3航站楼",
+                "monorail": null,
+                "interchange": null,
+                "belongto": "10号线",
+                "time": "2017-12-28",
+                "url":"css/images/station/airplane.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.6516335,
+                    29.7098692
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 87,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "重庆北站北广场",
+                "monorail": null,
+                "interchange": true,
+                "belongto": "4号线，10号线",
+                "time": "2017-12-28",
+                "url":"css/images/station/train.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.5472904,
+                    29.615056
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 93,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "朝天门",
+                "monorail": null,
+                "interchange": null,
+                "belongto": "1号线",
+                "time": "2020-12-31",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.582502,
+                    29.5674653
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 104,
+                "subway": null,
+                "network": "重庆轨道交通",
+                "name": "李子坝",
+                "monorail": "yes",
+                "interchange": null,
+                "belongto": "2号线",
+                "time": "2005-06-18",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.5339223,
+                    29.5556616
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 131,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "重庆西站",
+                "monorail": null,
+                "interchange": true,
+                "belongto": "环线，5号线",
+                "time": "2021-01-20",
+                "url":"css/images/station/train.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.4354642,
+                    29.5026819
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 141,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "跳磴",
+                "monorail": null,
+                "interchange": true,
+                "belongto": "5号线，18号线，江跳线",
+                "time": "2021-01-20",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.434049198720714,
+                    29.410867186854574
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 146,
+                "subway": "yes",
+                "network": "重庆轨道交通",
+                "name": "磁器口",
+                "monorail": null,
+                "interchange": null,
+                "belongto": "1号线",
+                "time": "2012-12-20",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.442435101873144,
+                    29.579295059757658
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 184,
+                "subway": null,
+                "network": "重庆轨道交通",
+                "name": "碧津",
+                "monorail": "yes",
+                "interchange": true,
+                "belongto": "3号线，3号线空港支线",
+                "time": "2011-12-30",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.6288631,
+                    29.7139176
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "fid": 185,
+                "subway": null,
+                "network": "重庆轨道交通",
+                "name": "临江门",
+                "monorail": "yes",
+                "interchange": null,
+                "belongto": "2号线",
+                "time": "2005-06-18",
+                "url":"css/images/station/ferris-wheel.png"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    106.5709609,
+                    29.5613469
+                ]
+            }
+        }
+    ]
+}

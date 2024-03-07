@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="CHN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重庆轨道交通大事记</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/data.js"></script>
+
+    <link rel="stylesheet" href="css/leaflet.css">
+    <script src="js/leaflet-src.js"></script>
+    <script src="js/leaflet.ajax.js"></script>
+    <!-- mousePosition -->
+    <link rel="stylesheet" href="css/L.Control.MousePosition.css">
+    <script src="js/L.Control.MousePosition.js"></script>
+    <!-- 图例 -->
+    <link rel="stylesheet" href="css/leaflet.legend.css">
+    <script src="js/leaflet.legend.js"></script>
+    <!-- 时间轴 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="node_modules\leaflet.timeline\dist\leaflet.timeline.js"></script>
+
+    <!-- 权重要高的 -->
+    <style>
+        .leaflet-container .leaflet-control-attribution {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .leaflet-control.leaflet-timeline-control .sldr-ctrl-container {
+            float: left;
+            width: 24%;
+            box-sizing: border-box;
+        }
+
+        .leaflet-control.leaflet-timeline-control input[type="range"] {
+            width: 70%;
+        }
+
+        .leaflet-control.leaflet-timeline-control .button-container button {
+            position: relative;
+            width: 25%;
+            height: 20px;
+            margin: 3px;
+        }
+
+        .leaflet-control.leaflet-timeline-control {
+            width: 96%;
+            box-sizing: border-box;
+            margin: 2%;
+            margin-bottom: 10px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .leaflet-legend-title {
+            margin: 3px;
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="infoContainer">
+        <h2 class="header">重庆轨道交通大事记</h2>
+        <div id="container">
+            <div class="defaultInfo">
+                <div>
+                    重庆轨道交通（Chongqing Rail Transit
+                    ，CRT）是服务于中国重庆主城都市区境内的城市轨道交通系统。其第一条线路于2005年6月18日开通试运营，成为中国内地第九座、西部地区第一座开通城市轨道交通的城市。
+                </div>
+                <img src="css/images/shouye.jpg" alt="重庆轨道交通">
+                <div>
+                    截至2023年12月，重庆轨道交通已开通12条线路，运营里程538km（含璧山云巴）。其中，环线、1、4、5、6、9、10、18号线、国博线为地铁系统，2、3号线为单轨系统（跨座式单轨），江跳线为市域（郊）铁路。
+                </div>
+                <div>
+                    截至2023年12月，重庆轨道交通在建线路共12条。
+                </div>
+                <div>
+                    2023年12月31日跨年夜延时运营，重庆轨道交通全线网客运量达508.1万人次，创下历史最高客运量。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // functions
+        // 设置每年的大事件
+        let container = document.getElementById("container");
+        function updateAnnualEvent(year) {
+            console.log(year);
+            if (year != 2024) {
+                let content = annualEvent[year];
+                container.innerHTML = '';
+                let h3 = document.createElement("h3");
+                h3.textContent = year + '年大事件';
+                h3.classList.add('yearHeader');
+                container.appendChild(h3)
+                for (let i = 0; i < content.length; i++) {
+                    let p = document.createElement("p");
+                    p.textContent = content[i];
+                    container.appendChild(p);
+                }
+            } else {
+                container.innerHTML = defaultInfo;
+                
+            }
+        }
+        function updateCrtInfo(feature) {
+            if (feature.geometry.type == 'Point') {
+                container.innerHTML = '';
+                let stationName = feature.properties.name;
+                let h3 = document.createElement("h3");
+                h3.textContent = stationName + '站';
+                container.appendChild(h3);
+                let belongs = feature.properties.belongto.split('，');
+                for (let i = 0; i < belongs.length; i++) {
+                    let span = document.createElement("span");
+                    span.style.color = lineColor[belongs[i]]
+                    span.textContent = belongs[i];
+                    container.appendChild(span);
+                    if (belongs.length != 1 && i != belongs.length - 1) {
+                        let splitSpan = document.createElement("span");
+                        splitSpan.textContent = ' | ';
+                        container.appendChild(splitSpan);
+                    }
+                }
+                let img = document.createElement("img");
+                img.src = stationImageUrl[stationName];
+                container.appendChild(img);
+                let p = document.createElement("p");
+                p.textContent = stationInfo[stationName];
+                container.appendChild(p);
+            } else if (feature.geometry.type == 'MultiLineString') {
+                container.innerHTML = '';
+                let lineName = feature.properties.name;
+                let lineSection = feature.properties.projectname + '（' + feature.properties.section + '）';
+                let content = lineInfo[lineName];
+                let h3 = document.createElement("h3");
+                h3.classList.add('lineHeader');
+                h3.style.color = feature.properties.color;
+                h3.textContent = lineName;
+                let h4 = document.createElement("h4");
+                h4.textContent = lineSection;
+                h4.style.color = feature.properties.color
+                container.append(h3);
+                container.append(h4);
+
+                let p1 = document.createElement("p");
+                p1.textContent = content[0];
+                container.appendChild(p1);
+                let img = document.createElement("img");
+                img.src = lineImageUrl[lineName];
+                container.append(img)
+                let p2 = document.createElement("p");
+                p2.textContent = content[1];
+                container.appendChild(p2);
+            }
+        }
+
+        // 地图初始化
+        let bounds = L.latLngBounds(L.latLng(30.0477, 105.7523), L.latLng(29.0327, 107.3088)); //构建视图限制范围
+        const basemaps = {
+            CartoDB: L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: 'Maps &copy; <a target="owm" href="https://carto.com/attribution/">Carto</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ',
+                maxZoom: 16,
+                minZoom: 10,
+            }),
+            OpenStreetMap: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Maps &copy;<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, Data&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 16,
+                minZoom: 10,
+            }),
+            Atlas: L.tileLayer('https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=9e0fbb9cc6884e1796a190fe74ea7fe4', {
+                attribution: 'Maps &copy;<a href="https://www.thunderforest.com">Thunderforest</a>, Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 16,
+                minZoom: 10
+            })
+        };
+        let map = L.map('map', {
+            center: [29.5574, 106.5002],
+            zoom: 10,
+            layers: basemaps.CartoDB,
+        });
+        map.setMaxBounds(bounds);
+        L.control.layers(basemaps).addTo(map);
+
+        // 图例
+        L.control.Legend({
+            position: 'bottomleft',
+            title: '图例',
+            collapsed: false,
+            symbolWidth: 30,
+            symbolHeight: 30,
+            opacity: 0.5,
+            column: 2,
+            weight: 5,
+            legends: legendLabel
+        }).addTo(map);
+        // 比例尺
+        L.control.scale({
+            maxWidth: 200,
+            metric: true,// 米
+            imperial: false,
+            updateWhenIdle: true
+        }).addTo(map);
+
+        // 加载数据
+        let geojsonLayerOfCrt = new L.GeoJSON.AJAX('data/重庆轨道交通线路.geojson');
+
+        geojsonLayerOfCrt.on('data:loaded', function (data) {
+            setTimeout(function () {
+                map.setView([29.5574, 106.5002], 11);
+            }, 2000);
+            // 时间轴
+            let timelineControl = L.timelineSliderControl({
+                formatOutput: function (date) {
+                    return moment(date).format("YYYY-MM-DD");
+                },
+                position: 'bottomright'
+            });
+            let timeline = L.timeline(geojsonLayerOfCrt.toGeoJSON(), {
+                getInterval: function (feature) {
+                    // console.log(new Date (feature.properties.time).getTime());
+                    return {
+                        start: new Date(feature.properties.time).getTime(),
+                        end: new Date("2024-01-08").getTime()
+                    };
+                },
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: L.icon({
+                            iconUrl: feature.properties.url,
+                            iconSize: [36, 36],
+                        }),
+                    });
+                },
+                style: function (feature) {
+                    return {
+                        color: feature.properties.color,
+                        weight: 4.5
+                    }
+                },
+                onEachFeature: function (feature, layer) {
+                    let name = feature.properties.name;
+                    layer.bindTooltip(name, {
+                        sticky: true // 跟随鼠标
+                    });
+                    // 点击事件
+                    layer.on('click', function (e) {
+                        // console.log('Clicked feature time:', new Date(feature.properties.time));
+                        console.log('Clicked feature name:', name);
+                        updateCrtInfo(feature);
+                    });
+                }
+            });
+            timelineControl.addTo(map);
+            timelineControl.addTimelines(timeline);
+            timeline.addTo(map);
+
+            timeline.on("change", function (e) {
+                currentTime = this.time;
+                if (currentYear == getYearFromTimestamp(currentTime)) {
+                    // 年份不变
+                } else {
+                    currentYear = getYearFromTimestamp(currentTime);
+                    updateAnnualEvent(currentYear);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
